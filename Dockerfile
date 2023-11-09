@@ -5,7 +5,7 @@ FROM nginx:latest
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 
 # Expose port 80
-EXPOSE 80
+EXPOSE 8080
 
 # Stay nginx in the foreground.
 CMD ["nginx", "-g", "daemon off;"]
