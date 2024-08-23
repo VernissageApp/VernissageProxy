@@ -1,5 +1,5 @@
 # Use official nginx image as the base image
-FROM nginx:latest
+FROM openresty/openresty:jammy
 
 # Use custom ngix file (for rewriting to index.html).
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
