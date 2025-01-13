@@ -14,3 +14,8 @@ primary_region = "waw"
   auto_start_machines = true
   min_machines_running = 1
   processes = ["app"]
+
+[[vm]]
+  memory = '512mb'
+  cpu_kind = 'shared'
+  cpus = 2
