@@ -20,6 +20,7 @@ The proxy is intentionally simple: routing is based on request path and headers 
 - Single-entry reverse proxy for the Vernissage stack
 - Header-based routing for API and machine-readable requests
 - Path-based routing for API and federated endpoints
+- Edge rejection of common scanner paths before they reach the API or web app
 - Docker-friendly deployment with a minimal Nginx image
 - Current configuration tailored for Fly.io private networking
 
@@ -35,6 +36,10 @@ The routing logic lives in [`nginx.conf`](nginx.conf).
 | `/atom/*` | backend | Feed endpoints |
 | `Accept` or `Content-Type` contains `json` | backend | Case-insensitive match, applies outside the explicit API paths too |
 | everything else | frontend | Regular browser traffic goes to Vernissage Web |
+
+Before routing, the proxy returns `404 Not Found` for paths that target technologies Vernissage does not use. This includes PHP and WordPress probes, sensitive dotfiles such as `.env` and `.git`, dependency manifests, container configuration files, and administration or diagnostics endpoints from unrelated stacks. These requests are handled entirely by Nginx and never start Angular SSR or reach the API.
+
+Federation endpoints under `/.well-known/*` are not part of this filter and continue to be routed to the backend.
 
 In practice:
 
